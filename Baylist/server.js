@@ -1,6 +1,8 @@
-const express = require('express');
-const db = require('./config/db');
-const routes = require('./routes');
+// Baylist/server.js
+
+import express from 'express';
+import db from './config/db.js';
+import routes from './routes/index.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
