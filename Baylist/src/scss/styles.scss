@@ -1,2 +1,34 @@
 // Import all of Bootstrap's CSS
 @import "bootstrap/scss/bootstrap";
+
+// Define custom colors using SCSS variables
+
+$light-purple: #8e7cc3;
+$dark-purple: #31004a;
+$nav-purple: #782ade;
+$light-pink: #d9b3ff;
+$light-blue: #bde3ff;
+$dark-blue: #0d99ff;
+$dark-grey: #767676;
+$light-grey: #dbdbdb;
+$middle-grey: #d7d7d7;
+
+$custom-colors: (
+    'light-purple': $light-purple,
+    'light-pink': $light-pink,
+    'dark-purple': $dark-purple,
+    'nav-purple': $nav-purple,
+    'light-blue': $light-blue,
+    'dark-blue' : $dark-blue,
+    'dark-grey' : $dark-grey,
+    'light-grey' : $light-grey,
+    'middle-grey' : $middle-grey
+);
+
+$utilities: map-merge($utilities,
+        ("background-color": (property: background-color,
+                class: bg,
+                values: $custom-colors ),
+        ));
+//Outcome of this you'd be able to use the custom background classes, ex: .bg-custom-red
+@import "bootstrap/scss/utilities/api";
