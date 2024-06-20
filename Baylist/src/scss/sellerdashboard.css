@@ -1,0 +1,71 @@
+
+.seller-dashboard-container{
+    border: 2px solid black;
+    width: 400px;
+    height: 600px;
+    background-color: #BB92E9;
+}
+
+.add-photos-button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 150px;
+    font-size: 20px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.dashboard-title-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-title{
+    font-size: 20px;
+    margin: 20px;
+    margin-top: 5px;
+    border-radius: 3%;
+    padding: 2px;
+}
+
+.save-draft-button{
+    background-color: lightblue;
+    margin-right: 10px;
+    text-decoration: none;
+    color: black;
+    border-radius: 5%;
+    padding: 5px;
+    height: 40px;
+
+}
+.add-photos-button-container-container{
+    display: flex;
+    justify-content: center;
+}
+
+.dashboard-website-name{
+    display: flex;
+    margin: 10px;
+    font-size: 15px;
+}
+
+.required-forms-container{
+    display: flex;
+    margin: 10px;
+    font-size: 20px;
+}
+
+.seller-input-form{
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    height: 40px;
+    margin: 5px;
+}
+
+.seller-input-container{
+    display: flex;
+    flex-direction: column;
+}
