@@ -3,18 +3,19 @@ import "../scss/styles.scss"
 function SellerDashboard() {
 
     return (
+        <main>
             <div className="seller-dashboard-container">
                 <div className="row">
                     <div className="col-12">
                         <div className="dashboard-website-name">Baylist</div>
                         <div className="dashboard-title-container">
                             <div className="dashboard-title">Item for Sale</div>
-                            <a className="save-draft-button">Save Draft</a>
+                            <a href="" className="save-draft-button">Save Draft</a>
                         </div>   
                         <div className="add-photos-button-container-container">
-                        <div className="add-photos-button-container">
+                        <a href="" className="add-photos-button-container">
                             <div className="add-photos-button">Add Photos</div>
-                        </div>
+                        </a>
                         </div>
                     </div>
                 </div>
@@ -33,6 +34,7 @@ function SellerDashboard() {
                     </div>
                 </div>
             </div>
+        </main>    
     );
 }
 export default SellerDashboard;
