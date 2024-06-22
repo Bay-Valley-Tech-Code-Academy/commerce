@@ -1,43 +1,44 @@
+import React, { useState, useEffect } from 'react';
 import './favorites.scss';
 import image from '../assets/duck-product.jpg';
 import { Carousel, Button, Modal, Form, Dropdown } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
 
 const Favorites = () => {
-
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
-    const [activeIndex, setActiveIndex] = useState(0); // State to track the active index of the carousel
+    const [activeIndex, setActiveIndex] = useState(0);
     const [lists, setLists] = useState([
         {
             id: 1,
             title: 'Favorites',
             items: [
-                { id: 1, title: 'Item 1 Title', description: 'Item 1 description text goes here.', price: '$29.99', rating: 4 },
+                { id: 1, title: 'Item 1 Title', description: 'Item 1 description text goes here.', price: '$29.99', rating: 1 },
                 { id: 2, title: 'Item 2 Title', description: 'Item 2 description text goes here.', price: '$24.99', rating: 3 },
-                { id: 3, title: 'Item 3 Title', description: 'Item 3 description text goes here.', price: '$19.99', rating: 2 },
-                { id: 4, title: 'Item 4 Title', description: 'Item 4 description text goes here.', price: '$14.99', rating: 1 },
-                { id: 5, title: 'Item 5 Title', description: 'Item 5 description text goes here.', price: '$39.99', rating: 5 },
-                { id: 6, title: 'Item 6 Title', description: 'Item 6 description text goes here.', price: '$49.99', rating: 4 },
-                { id: 7, title: 'Item 7 Title', description: 'Item 7 description text goes here.', price: '$59.99', rating: 3 },
-                { id: 8, title: 'Item 8 Title', description: 'Item 8 description text goes here.', price: '$69.99', rating: 2 }// Add other items as needed
+                { id: 3, title: 'Item 3 Title', description: 'Item 1 description text goes here.', price: '$29.99', rating: 4 },
+                { id: 4, title: 'Item 4 Title', description: 'Item 2 description text goes here.', price: '$24.99', rating: 5 },
+                { id: 5, title: 'Item 5 Title', description: 'Item 1 description text goes here.', price: '$29.99', rating: 0 },
+                { id: 6, title: 'Item 6 Title', description: 'Item 2 description text goes here.', price: '$24.99', rating: 1 },
+                { id: 7, title: 'Item 7 Title', description: 'Item 1 description text goes here.', price: '$29.99', rating: 2 },
+                { id: 8, title: 'Item 8 Title', description: 'Item 2 description text goes here.', price: '$24.99', rating: 3 },
+                { id: 9, title: 'Item 9 Title', description: 'Item 1 description text goes here.', price: '$29.99', rating: 4 },
+                // Other items
             ]
         },
         {
             id: 2,
             title: 'lmao dank memes',
-            items: [{ id: 1, title: 'Duck', description: 'Item 1 description text goes here.', price: '$29.99', rating: 4 },
-                { id: 2, title: 'DuckDuckDuckDuckDuck', description: 'stuff to add because I want to overflow the content so I will overflow it right now beyond the text boundaries okay??????', price: '$24.99', rating: 5 },
-                { id: 3, title: 'GooseGooseGooseGoose', description: 'GooseGooseGooseGooseGooseGooseGoose', price: '$19.99', rating: 0 }]
+            items: [
+                { id: 1, title: 'Duck', description: 'Item 1 description text goes here.', price: '$29.99', rating: 4 },
+                // Other items
+            ]
         }
     ]);
     const [showAddListModal, setShowAddListModal] = useState(false);
     const [newListName, setNewListName] = useState('');
-    const [selectedList, setSelectedList] = useState(null); // State to track the currently selected list
-    const maxLists = 5; // Maximum number of lists per user
+    const [selectedList, setSelectedList] = useState(null);
+    const maxLists = 5;
 
     useEffect(() => {
-        // Initialize selectedList with the first list upon component mount
         if (lists.length > 0 && selectedList === null) {
             setSelectedList(lists[0]);
         }
@@ -54,6 +55,13 @@ const Favorites = () => {
         setSelectedList({ ...selectedList, items: updatedItems });
         setShowDeleteModal(false);
         setItemToDelete(null);
+        
+        // Calculate total number of pages after deletion
+        const totalPages = Math.ceil(updatedItems.length / 4);
+
+        // Set activeIndex to the last page if it exceeds the total pages
+        setActiveIndex(Math.max(0, totalPages - 1));
+        console.log('After adjustment - activeIndex:', activeIndex);
     };
 
     const closeModal = () => {
@@ -61,38 +69,34 @@ const Favorites = () => {
         setItemToDelete(null);
     };
 
-    // Function to handle the add list button click
     const handleAddListClick = () => {
         setShowAddListModal(true);
     };
 
-    // Function to handle closing the modal
     const handleCloseModal = () => {
         setShowAddListModal(false);
-        setNewListName(''); // Reset the input field
+        setNewListName('');
     };
 
-    // Function to handle adding a new list
     const handleAddList = () => {
         if (newListName.trim() === '') {
-            alert('Please enter a list name.'); // Basic validation
+            alert('Please enter a list name.');
             return;
         }
 
         if (lists.length >= maxLists) {
-            alert(`You can only create up to ${maxLists} lists.`); // Limit reached
+            alert(`You can only create up to ${maxLists} lists.`);
             return;
         }
 
         const newList = {
-            id: lists.length + 1, // Generate a unique ID (you may need a more robust approach for real applications)
-            title: newListName.slice(0, 30), // Limit to 30 characters
-            items: [] // Initially empty items array
+            id: lists.length + 1,
+            title: newListName.slice(0, 30),
+            items: []
         };
 
-        // Update the lists state with the new list
         setLists([...lists, newList]);
-        setSelectedList(newList); // Set the newly added list as selected
+        setSelectedList(newList);
         setNewListName('');
         setShowAddListModal(false);
     };
@@ -142,15 +146,16 @@ const Favorites = () => {
 
     const renderContent = () => {
         if (selectedList && selectedList.items.length > 0) {
-            const showIndicators = selectedList.items.length > 4; // Determine whether to show indicators based on number of items
-            const showControls = selectedList.items.length > 4; // Determine whether to show controls based on number of items
+            const showIndicators = selectedList.items.length > 4;
+            const showControls = selectedList.items.length > 4;
 
             return (
                 <Carousel
+                    interval={null} // Set interval to null to disable automatic sliding
                     indicators={showIndicators}
                     controls={showControls}
-                    activeIndex={activeIndex} // Make sure activeIndex is defined and set appropriately
-                    onSelect={(selectedIndex) => setActiveIndex(selectedIndex)} // Set activeIndex when a slide is selected
+                    activeIndex={activeIndex}
+                    onSelect={(selectedIndex) => setActiveIndex(selectedIndex)}
                 >
                     {renderSlides()}
                 </Carousel>
@@ -164,22 +169,34 @@ const Favorites = () => {
         }
     };
 
+    const handlePrevList = () => {
+        const currentIndex = lists.findIndex(list => list.id === selectedList.id);
+        const prevIndex = (currentIndex - 1 + lists.length) % lists.length;
+        setSelectedList(lists[prevIndex]);
+    };
+
+    const handleNextList = () => {
+        const currentIndex = lists.findIndex(list => list.id === selectedList.id);
+        const nextIndex = (currentIndex + 1) % lists.length;
+        setSelectedList(lists[nextIndex]);
+    };
+
     return (
         <div className="favorites-container">
-            <div className="favorites-tab bg-secondary text-white">Favorites</div>
-            {lists.length > 1 && (
-                <Dropdown className="mb-2 mt-2">
+            <div className="favorites-tab bg-secondary text-white">
+                <span className="arrow" onClick={handlePrevList}>&lt;</span>
+                <Dropdown className="mx-2">
                     <Dropdown.Toggle variant="light" id="dropdown-basic">
                         {selectedList ? selectedList.title : 'Select List'}
                     </Dropdown.Toggle>
-
                     <Dropdown.Menu>
                         {lists.map(list => (
                             <Dropdown.Item key={list.id} onClick={() => handleListSelect(list)}>{list.title}</Dropdown.Item>
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
-            )}
+                <span className="arrow" onClick={handleNextList}>&gt;</span>
+            </div>
             <div className="cards-wrapper bg-light-grey">
                 {renderContent()}
             </div>
@@ -202,7 +219,6 @@ const Favorites = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            {/* Modal for adding a new list */}
             <Modal show={showAddListModal} onHide={handleCloseModal} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Add New List</Modal.Title>
