@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './favorites.scss';
 import image from '../assets/duck-product.jpg';
 import { Carousel, Button, Modal, Form, Dropdown } from 'react-bootstrap';
@@ -28,7 +28,7 @@ const Favorites = () => {
             id: 2,
             title: 'lmao dank memes',
             items: [
-                { id: 1, title: 'Duck', description: 'Item 1 description text goes here.', price: '$29.99', rating: 4 },
+                { id: 1, title: 'Duck', description: 'Item 1 description text goes here.', price: '$29.99', rating: 4 }
                 // Other items
             ]
         }
@@ -39,7 +39,7 @@ const Favorites = () => {
     const maxLists = 5;
 
     useEffect(() => {
-        if (lists.length > 0 && selectedList === null) {
+        if (lists.length > 0 && !selectedList) {
             setSelectedList(lists[0]);
         }
     }, [lists, selectedList]);
@@ -55,13 +55,12 @@ const Favorites = () => {
         setSelectedList({ ...selectedList, items: updatedItems });
         setShowDeleteModal(false);
         setItemToDelete(null);
-        
+
         // Calculate total number of pages after deletion
         const totalPages = Math.ceil(updatedItems.length / 4);
 
         // Set activeIndex to the last page if it exceeds the total pages
         setActiveIndex(Math.max(0, totalPages - 1));
-        console.log('After adjustment - activeIndex:', activeIndex);
     };
 
     const closeModal = () => {
@@ -103,6 +102,7 @@ const Favorites = () => {
 
     const handleListSelect = (list) => {
         setSelectedList(list);
+        setActiveIndex(0); // Reset active index when selecting a new list
     };
 
     const renderSlide = (startIndex, endIndex) => {
@@ -134,9 +134,23 @@ const Favorites = () => {
     };
 
     const renderSlides = () => {
+        if (!selectedList) {
+            return null;
+        }
+
+        const { items } = selectedList;
+
+        if (!items || items.length === 0) {
+            return (
+                <div className="empty-message mx-auto">
+                    <strong>No Items in this List</strong>
+                </div>
+            );
+        }
+
         const slides = [];
         let startIndex = 0;
-        while (startIndex < selectedList.items.length) {
+        while (startIndex < items.length) {
             const endIndex = startIndex + 4;
             slides.push(renderSlide(startIndex, endIndex));
             startIndex = endIndex;
@@ -145,40 +159,43 @@ const Favorites = () => {
     };
 
     const renderContent = () => {
-        if (selectedList && selectedList.items.length > 0) {
-            const showIndicators = selectedList.items.length > 4;
-            const showControls = selectedList.items.length > 4;
-
-            return (
-                <Carousel
-                    interval={null} // Set interval to null to disable automatic sliding
-                    indicators={showIndicators}
-                    controls={showControls}
-                    activeIndex={activeIndex}
-                    onSelect={(selectedIndex) => setActiveIndex(selectedIndex)}
-                >
-                    {renderSlides()}
-                </Carousel>
-            );
-        } else {
+        if (!selectedList || selectedList.items.length === 0) {
             return (
                 <div className="empty-message mx-auto">
-                    <strong>Empty</strong>
+                    <strong>{!selectedList ? 'Select a List' : 'No Items in this List'}</strong>
                 </div>
             );
         }
+
+        const { items } = selectedList;
+        const showIndicators = items.length > 4;
+        const showControls = items.length > 4;
+
+        return (
+            <Carousel
+                interval={null} // Set interval to null to disable automatic sliding
+                indicators={showIndicators}
+                controls={showControls}
+                activeIndex={activeIndex}
+                onSelect={(selectedIndex) => setActiveIndex(selectedIndex)}
+            >
+                {renderSlides()}
+            </Carousel>
+        );
     };
 
     const handlePrevList = () => {
         const currentIndex = lists.findIndex(list => list.id === selectedList.id);
         const prevIndex = (currentIndex - 1 + lists.length) % lists.length;
         setSelectedList(lists[prevIndex]);
+        setActiveIndex(0); // Reset active index when navigating to the previous list
     };
 
     const handleNextList = () => {
         const currentIndex = lists.findIndex(list => list.id === selectedList.id);
         const nextIndex = (currentIndex + 1) % lists.length;
         setSelectedList(lists[nextIndex]);
+        setActiveIndex(0); // Reset active index when navigating to the next list
     };
 
     return (
