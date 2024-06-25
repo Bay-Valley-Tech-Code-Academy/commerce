@@ -1,15 +1,30 @@
-// Baylist/server.js
-
 import express from 'express';
-import db from './config/db.js';
-import routes from './routes/index.js';
+import mysql from 'mysql2/promise';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use('/api', routes);
+const initializeDatabase = async () => {
+  try {
+    const connection = await mysql.createConnection({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: 'baylist-commerce-database',
+    });
+    console.log('Connected to the MySQL database');
+    connection.end();
+  } catch (error) {
+    console.error('Error connecting to the database:', error);
+  }
+};
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+initializeDatabase();
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });

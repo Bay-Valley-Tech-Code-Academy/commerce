@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "0.0.0.0/0",
+            "port": 3306,
+            "driver": "MySQL",
+            "username": "admin",
+            "database": "baylist-commerce-database.cl26mig04yzm.us-east-2.rds.amazonaws.com",
+            "name": "baylist commerce database"
+        }
+    ]
+}
