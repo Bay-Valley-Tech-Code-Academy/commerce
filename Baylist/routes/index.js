@@ -17,14 +17,4 @@ router.get('/products', (req, res) => {
     });
 });
 
-// Test route to verify database connection
-router.get('/test-db', (req, res) => {
-    db.query('SELECT 1 + 1 AS solution', (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ message: 'Database connection is working!', solution: results[0].solution });
-    });
-});
-
 export default router;
