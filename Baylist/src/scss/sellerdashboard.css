@@ -5,6 +5,40 @@
     height: 600px;
     background-color: #BB92E9;
 }
+.desktop-dashboard {
+    border: 0px solid black;
+    width: 100vw;
+    height: 100%;
+    background-color: #BB92E9;
+    display: flex;
+}
+.media-count {
+    margin-left: 5px;    
+    display: flex;
+}
+.add-media {
+    margin-left: 5px;
+    display: flex;
+    gap: 1px;
+}
+.add-photo-button, .add-video-button {
+    width: 150px;
+    height: 150px;
+    display: inline;
+}
+.required-section {
+    display: block;
+}
+.description-tip {
+    display: block;
+    text-indent: 1px;
+}
+.preview-section {
+    background: black;
+}
+.listing-header {
+    display: flex;
+}
 
 .add-photos-button-container{
     display: flex;
@@ -56,13 +90,17 @@
     margin: 10px;
     font-size: 20px;
 }
-
+.listing-section {
+    text-align: left;
+    margin-left: 5px;
+}
 .seller-input-form{
     background-color: white;
     border: 1px solid black;
     color: black;
     height: 40px;
     margin: 5px;
+    text-align: left;
 }
 
 .seller-input-container{

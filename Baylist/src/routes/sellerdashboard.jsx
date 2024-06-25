@@ -1,10 +1,11 @@
-import "../scss/sellerdashboard.css"
-import "../scss/styles.scss"
+import "../scss/sellerdashboard.css";
+import "../scss/styles.scss";
 function SellerDashboard() {
 
     return (
             <div className="seller-dashboard-container">
-                <div className="row">
+                {/* Mobile Dashboard 
+                <div className="mobile-dashboard">
                     <div className="col-12">
                         <div className="dashboard-website-name">Baylist</div>
                         <div className="dashboard-title-container">
@@ -31,8 +32,76 @@ function SellerDashboard() {
                             <input placeholder="Description" className="seller-input-form"></input>
                         </div>
                     </div>
-                </div>
+                </div>*/}
+
+                {/* Desktop Dashboard */}
+                <div className="desktop-dashboard">
+                    <div className="col-3">
+                        <div className="listing-header">
+                            <div className="item-name">Item for sale</div>                                
+                            <button className="save-draft-button">Save Draft</button>
+                        </div>
+                        <div className="media-upload-container">
+                        <div className="media-count">Photos • # / 10, Videos • # / 1</div>  
+                        <div className="add-media">
+                            <button type="submit" className="add-photo-button">
+                            <img src="../assets/baylistlogo.png"></img>    
+                                <b>Add Photos</b> or drag and drop</button>
+                            <div className="add-videos">
+                                <button type="submit" className="add-video-button">
+                                <img src="../assets/baylistlogo.png"></img>       
+                                <b>Add Videos</b> or drag and drop</button>
+                            </div>
+                        </div>
+                        <div className="required-section">
+                            <b>Required</b>
+                            <label>Step 1/3:</label>
+                            <div className="description-tip">Be as descriptive as possible.</div>
+                            <progress id="file" value="33" max="100"> 33% </progress>
+                        </div>
+                        <button className="next-button">Next</button>
+                        </div>
+                    </div>
+
+                    { /* Preview section */}
+                    <div className="col-5">
+                    <div className="preview-section">
+                        <div className="preview-image-container">
+                            Preview
+                        </div>
+                        <div className="preview-details-container">
+                            <h1>Your listing preview</h1>
+                            <h3>As you create your listing, you can preview how it will appear to others.</h3>
+                            <img src="" alt="Product Image Preview" className="preview-image"></img>
+                        </div>
+                        </div>
+                    <div className="seller-info">
+                        {/* Seller information section content */}
+                    </div>
+                    </div>
+
+                    {/* Listing specs */ }
+                    <div className="listing-section col-3">
+                    <div className="product-details-container">
+
+                        <div className="seller-input-container">
+                            <div className="listing-title"><b>Title</b></div>
+                            <div className="listing-price">Price</div>
+                            <div className="listing-duration">Listed *however long ago* in *location*</div>
+                            <div className="details-section"><b>Details</b></div>
+                            <div placeholder="Description" className="description-section">Description will appear here.</div>
+                            <hr></hr>
+                            <input placeholder="Category" className="seller-input-form"></input>
+                            <input placeholder="Condition" className="seller-input-form"></input>
+                        </div>
+
+                    </div>
+                    <button className="submit-button">Submit Listing</button>
+                    </div>
+
+                    </div>
             </div>
+            
     );
 }
 export default SellerDashboard;
