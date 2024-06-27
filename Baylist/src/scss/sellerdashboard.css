@@ -1,10 +1,11 @@
-
-.seller-dashboard-container{
+.seller-dashboard-container {
     border: 2px solid black;
     width: 400px;
     height: 600px;
     background-color: #BB92E9;
 }
+
+/* Desktop Dashboard Styles */
 .desktop-dashboard {
     border: 0px solid black;
     width: 100vw;
@@ -13,7 +14,7 @@
     display: flex;
 }
 .media-count {
-    margin-left: 5px;    
+    margin-left: 5px;
     display: flex;
 }
 .add-media {
@@ -39,8 +40,7 @@
 .listing-header {
     display: flex;
 }
-
-.add-photos-button-container{
+.add-photos-button-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,21 +50,18 @@
     border: 1px solid black;
     background-color: white;
 }
-
-.dashboard-title-container{
+.dashboard-title-container {
     display: flex;
     justify-content: space-between;
 }
-
-.dashboard-title{
+.dashboard-title {
     font-size: 20px;
     margin: 20px;
     margin-top: 5px;
     border-radius: 3%;
     padding: 2px;
 }
-
-.save-draft-button{
+.save-draft-button {
     background-color: lightblue;
     margin-right: 10px;
     text-decoration: none;
@@ -72,20 +69,17 @@
     border-radius: 5%;
     padding: 5px;
     height: 40px;
-
 }
-.add-photos-button-container-container{
+.add-photos-button-container-container {
     display: flex;
     justify-content: center;
 }
-
-.dashboard-website-name{
+.dashboard-website-name {
     display: flex;
     margin: 10px;
     font-size: 15px;
 }
-
-.required-forms-container{
+.required-forms-container {
     display: flex;
     margin: 10px;
     font-size: 20px;
@@ -94,7 +88,7 @@
     text-align: left;
     margin-left: 5px;
 }
-.seller-input-form{
+.seller-input-form {
     background-color: white;
     border: 1px solid black;
     color: black;
@@ -102,8 +96,64 @@
     margin: 5px;
     text-align: left;
 }
-
-.seller-input-container{
+.seller-input-container {
     display: flex;
     flex-direction: column;
+}
+
+/* Mobile Dashboard Styles */
+.mobile-dashboard {
+    display: none; /* Hidden by default */
+}
+.mobile-dashboard .col-12 {
+    padding: 10px;
+}
+.mobile-dashboard .dashboard-website-name {
+    font-size: 18px;
+}
+.mobile-dashboard .dashboard-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.mobile-dashboard .dashboard-title {
+    font-size: 20px;
+}
+.mobile-dashboard .save-draft-button {
+    font-size: 14px;
+    padding: 5px 10px;
+}
+.mobile-dashboard .add-photos-button-container-container {
+    margin-bottom: 20px;
+}
+.mobile-dashboard .add-photos-button {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+}
+.mobile-dashboard .required-forms-container {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.mobile-dashboard .seller-input-container {
+    display: flex;
+    flex-direction: column;
+}
+.mobile-dashboard .seller-input-form {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #000000;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .mobile-dashboard {
+        display: block; /* Show mobile version */
+    }
+    .desktop-dashboard {
+        display: none; /* Hide desktop version */
+    }
 }
