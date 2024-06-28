@@ -56,7 +56,7 @@ function SellerDashboard() {
                 const firstResult = data[0];
                 const city = firstResult.address?.city || firstResult.display_name.split(',')[2].trim();
                 const state = firstResult.address?.state || firstResult.display_name.split(',')[4].trim();
-                setLocation(`${city}, ${state}`);
+                setLocation(`${city}, ${state}.`);
               } else {
                 console.warn("No location data found from Nominatim response.");
                 // Handle case where no location data is available (e.g., display a fallback message)
