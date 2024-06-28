@@ -39,14 +39,33 @@ function SellerDashboard() {
     setCondition(event.target.value);
   };
 
-  // Function to handle location retrieval (using Geolocation API)
+
+  // Function to handle location retrieval using Nominatim geocoding API
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          // You can use a geocoding API to convert coordinates to a readable address
-          setLocation(`(around Lat: ${latitude}, Lon: ${longitude})`); // Temporary placeholder
+
+          const nominatimUrl = `https://nominatim.openstreetmap.org/search?q=${latitude},${longitude}&format=json`;
+
+          fetch(nominatimUrl)
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.length > 0) {
+                const firstResult = data[0];
+                const city = firstResult.address?.city || firstResult.display_name.split(',')[2].trim();
+                const state = firstResult.address?.state || firstResult.display_name.split(',')[4].trim();
+                setLocation(`${city}, ${state}`);
+              } else {
+                console.warn("No location data found from Nominatim response.");
+                // Handle case where no location data is available (e.g., display a fallback message)
+              }
+            })
+            .catch((error) => {
+              console.warn(`Error fetching location data from Nominatim: ${error.message}`);
+              // Handle API request errors gracefully (e.g., display a fallback message)
+            });
         },
         (error) => {
           console.warn(`Error getting location: ${error.message}`);
@@ -58,6 +77,12 @@ function SellerDashboard() {
       // Handle case where geolocation is not supported
     }
   };
+
+  // Get location on component mount
+  useEffect(() => {
+    getLocation();
+  }, []);
+
 
   // Get location on component mount (optional)
   useEffect(() => {
