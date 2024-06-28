@@ -1,5 +1,6 @@
 import "../scss/sellerdashboard.css";
 import "../scss/styles.scss";
+import React, { useState, useEffect } from "react";
 
 function SellerDashboard() {
   // Assuming a function to get uploaded image URLs (replace with your implementation)
@@ -8,26 +9,60 @@ function SellerDashboard() {
     return ["image1.jpg", "image2.png"]; // Replace with actual URLs
   };
 
-  // Assuming a function to get product details (replace with your implementation)
-  const getProductTitle = () => {
-    // Logic to retrieve product title from your application state or user input
-    return "Product Name";
+  // State variables for form data
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [condition, setCondition] = useState("");
+  const [location, setLocation] = useState(""); // State for location
+
+
+  // Update functions for form fields
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
   };
 
-  const getProductCategory = () => {
-    // Logic to retrieve product category from your application state or user input
-    return "Electronics";
+  const handlePriceChange = (event) => {
+    setPrice(event.target.value);
   };
 
-  const getProductCondition = () => {
-    // Logic to retrieve product condition from your application state or user input
-    return "New";
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
   };
 
-  const getProductLocation = () => {
-    // Logic to retrieve product location from your application state or user input
-    return "San Francisco, CA";
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
   };
+
+  const handleConditionChange = (event) => {
+    setCondition(event.target.value);
+  };
+
+  // Function to handle location retrieval (using Geolocation API)
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          // You can use a geocoding API to convert coordinates to a readable address
+          setLocation(`(around Lat: ${latitude}, Lon: ${longitude})`); // Temporary placeholder
+        },
+        (error) => {
+          console.warn(`Error getting location: ${error.message}`);
+          // Handle location retrieval error (e.g., permission denied)
+        }
+      );
+    } else {
+      console.warn("Geolocation is not supported by this browser.");
+      // Handle case where geolocation is not supported
+    }
+  };
+
+  // Get location on component mount (optional)
+  useEffect(() => {
+    getLocation();
+  }, []); // Empty dependency array to run only once on mount
 
   return (
     <div className="seller-dashboard-container">
@@ -58,58 +93,94 @@ function SellerDashboard() {
             </div>
             <div className="required-section">
               <b>Required</b>
-              <div className="description-tip">Be as descriptive as possible.</div>
+              <div className="description-tip">
+                Be as descriptive as possible.
+              </div>
               <div className="seller-input-container">
                 <div className="listing-title">
-                    <input type="text" className="seller-input-form" placeholder="Title" />
+                  <input
+                    type="text"
+                    className="seller-input-form"
+                    placeholder="Title"
+                    value={title} // Update title with state variable
+                    onChange={handleTitleChange} // Trigger update on change
+                  />
                 </div>
                 <div className="listing-price">
-                    <input type="number" className="seller-input-form" placeholder="Enter Price" />
+                  <input
+                    type="number"
+                    className="seller-input-form"
+                    placeholder="Enter Price"
+                    value={price} // Update price with state variable
+                    onChange={handlePriceChange} // Trigger update on change
+                  />
                 </div>
                 <div className="details-section">
-                    <b>Description</b>
+                  <b>Description</b>
                 </div>
                 <div className="description-section">
-                    <textarea className="seller-input-form" placeholder="Enter Detailed Description"></textarea>
+                  <textarea
+                    className="seller-input-form"
+                    placeholder="Enter Detailed Description"
+                    value={description} // Update description with state variable
+                    onChange={handleDescriptionChange} // Trigger update on change
+                  />
                 </div>
-                <div className="listing-category">
-                    <input type="text" className="seller-input-form" placeholder="Category" />
-                </div>
-                <div className="listing-condition">
-                    <input type="text" className="seller-input-form" placeholder="Condition" />
-                </div>
-                <div className="listing-condition">
-                    <input type="text" className="seller-input-form" placeholder="Condition" />
-                </div>
-                <div className="listing-condition">
-                    <input type="text" className="seller-input-form" placeholder="Condition" />
-                </div>
-                <div className="listing-condition">
-                    <input type="text" className="seller-input-form" placeholder="Condition" />
-                </div>
-                <div className="listing-condition">
-                    <input type="text" className="seller-input-form" placeholder="Condition" />
-                </div>
-                </div>
+                <label htmlFor="listing-category-select"><b>Category</b></label>
+                <select
+                  id="listing-category-select"
+                  name="category"
+                  value={category} // Update category with state variable
+                  onChange={handleCategoryChange} // Trigger update on change
+                >
+                  <option value="collectibles-and-art">
+                    Collectibles & Art
+                  </option>
+                  <option value="clothing">Clothing</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="home-garden">Home & Garden</option>
+                  <option value="sports-and-outdoors">Sports & Outdoors</option>
+                
+                <option value="toys-and-games">Toys & Games</option>
+                </select>
+                <label htmlFor="listing-condition-select"><b>Condition</b></label>
+                <select
+                  id="condition-select"
+                  name="condition"
+                  value={condition} // Update condition with state variable
+                  onChange={handleConditionChange} // Trigger update on change
+                >
+                  <option value="new">New</option>
+                  <option value="used-like-new">Used - Like New</option>
+                  <option value="used-good">Used - Good</option>
+                  <option value="used-fair">Used - Fair</option>
+                  <option value="used-poor">Used - Poor</option>
+                  <option value="for-parts-or-not-working">
+                    For Parts or Not Working
+                  </option>
+                </select>
+              </div>
             </div>
-            <hr />
             <div className="progress-section">
-                <div className="progress-bar-container">
-                    <progress className="progress-bar" id="file" value="50" max="100">50%</progress>
-                </div>
-                <hr />
-                <div className="next-button-container">
-                    <button className="next-button">Next</button>
-                </div>
+              <hr />
+              <div className="progress-bar-container">
+                <progress className="progress-bar" id="file" value="50" max="100">
+                  50%
+                </progress>
+              </div>
+              <hr />
+              <div className="next-button-container">
+                <button className="next-button">Next</button>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Preview Section */}
-        <div className="col-5">
+        <div className="preview-container col-8">
           <div className="preview-section">
             {/* Preview Image Container */}
-            <div className="preview-image-container">
+            <div className="preview-section-image-container">
               {/* Loop through uploaded image URLs and display them */}
               {getUploadedImageURLs().map((imageUrl) => (
                 <img
@@ -123,62 +194,67 @@ function SellerDashboard() {
 
             {/* Preview Details Container */}
             <div className="preview-details-container">
-              <h1>Your listing preview</h1>
-              <h3>
+              <h1 className="preview-h1">Your listing preview</h1>
+              <h3 className="preview-h3">
                 As you create your listing, you can preview how it will appear
                 to others.
               </h3>
             </div>
           </div>
-          {/* Seller Information Section (add your content here) */}
-          <div className="seller-info">
-            {/* Seller information section content */}
-          </div>
-        </div>
 
-        {/* Listing Specs */}
-        <div className="listing-section col-3">
-          <div className="product-details-container">
-            <div className="seller-input-container">
-              <div className="listing-title">
-                <b>Title</b>: {getProductTitle()}
+          {/* Preview section listing users given specs */}
+          <div className="listing-section col-2">
+            <div className="product-details-container">
+              <div className="seller-input-container">
+                <div className="listing-title">
+                  <b>Title</b> {title}
+                </div>
+                <div className="listing-price">
+                  <b>Price</b> {price}
+                </div>
+                <div className="listing-duration">
+                  Listed (2 seconds ago) in {location}
+                </div>
+                <div className="listing-details-section">
+                  <b>Details</b>
+                </div>
+                <div className="listing-description-section">
+                  {description}
+                </div>
+                <hr />
+                <input
+                  placeholder="Category"
+                  className="seller-input-form"
+                  value={category} // Pre-fill with category state variable
+                  readOnly // Make category non-editable (optional)
+                />
+                <input
+                  placeholder="Condition"
+                  className="seller-input-form"
+                  value={condition} // Pre-fill with condition state variable
+                  readOnly // Make condition non-editable (optional)
+                />
               </div>
-              <div className="listing-price">Price</div>
-              <div className="listing-duration">
-                Listed *however long ago* in {getProductLocation()}
-              </div>
-              
-              <div className="details-section">
-                <b>Details</b>
-              </div>
-              <div className="description-section">{getProductDescription()}</div>
-              <hr />
-              <input
-                placeholder="Category"
-                className="seller-input-form"
-                value={getProductCategory()} // Pre-fill with retrieved category
-                readOnly // Make category non-editable (optional)
-              />
-              <input
-                placeholder="Condition"
-                className="seller-input-form"
-                value={getProductCondition()} // Pre-fill with retrieved condition
-                readOnly // Make condition non-editable (optional)
-              />
             </div>
-          </div>
+            <hr />
+            {/* Seller Information Section (add your content here) */}
+            <div className="seller-info">
+              {/* Seller information section content */}
+              Seller Info
+            </div>
             {/* Call to action button (optional) */}
             <button className="message-seller-button">Message Seller</button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
+export default SellerDashboard;
+
 // Assuming a function to get product description (replace with your implementation)
 const getProductDescription = () => {
   // Logic to retrieve product description from your application state or user input
   return "This is a detailed description of the awesome product.";
 };
-
-export default SellerDashboard;

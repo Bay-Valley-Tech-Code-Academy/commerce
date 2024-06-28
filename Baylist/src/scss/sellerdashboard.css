@@ -55,11 +55,20 @@
     display: block;
     text-indent: 1px;
 }
+.preview-container {
+    display: flex;
+}
 .preview-section {
     background: black;
 }
+.preview-h1, .preview-h3 {
+    color: white;
+}
 .listing-header {
     display: flex;
+}
+.listing-section {
+    align-items: right;
 }
 .seller-input-form {
     width: 280px;
