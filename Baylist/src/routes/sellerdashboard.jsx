@@ -11,12 +11,11 @@ function SellerDashboard() {
 
   // State variables for form data
   const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState("0");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [condition, setCondition] = useState("");
-  const [location, setLocation] = useState(""); // State for location
-
+  const [condition, setCondition] = useState("New");
+  const [location, setLocation] = useState("Location."); // State for location
 
   // Update functions for form fields
   const handleTitleChange = (event) => {
@@ -135,9 +134,11 @@ function SellerDashboard() {
                   <input
                     type="number"
                     className="seller-input-form"
-                    placeholder="Enter Price"
+                    placeholder="Enter Price ($)"
                     value={price} // Update price with state variable
                     onChange={handlePriceChange} // Trigger update on change
+                    min="0"
+                    maxLength="8"
                   />
                 </div>
                 <div className="details-section">
@@ -153,20 +154,18 @@ function SellerDashboard() {
                 </div>
                 <label htmlFor="listing-category-select"><b>Category</b></label>
                 <select
-                  id="listing-category-select"
+                  id="condition-select"
                   name="category"
                   value={category} // Update category with state variable
                   onChange={handleCategoryChange} // Trigger update on change
                 >
-                  <option value="collectibles-and-art">
-                    Collectibles & Art
-                  </option>
-                  <option value="clothing">Clothing</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="home-garden">Home & Garden</option>
-                  <option value="sports-and-outdoors">Sports & Outdoors</option>
+                  <option value="Collectibles and Art">Collectibles & Art</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Home & Garden">Home & Garden</option>
+                  <option value="Sports & Outdoors">Sports & Outdoors</option>
                 
-                <option value="toys-and-games">Toys & Games</option>
+                <option value="Toys & Games">Toys & Games</option>
                 </select>
                 <label htmlFor="listing-condition-select"><b>Condition</b></label>
                 <select
@@ -175,14 +174,12 @@ function SellerDashboard() {
                   value={condition} // Update condition with state variable
                   onChange={handleConditionChange} // Trigger update on change
                 >
-                  <option value="new">New</option>
-                  <option value="used-like-new">Used - Like New</option>
-                  <option value="used-good">Used - Good</option>
-                  <option value="used-fair">Used - Fair</option>
-                  <option value="used-poor">Used - Poor</option>
-                  <option value="for-parts-or-not-working">
-                    For Parts or Not Working
-                  </option>
+                  <option value="New">New</option>
+                  <option value="Used - Like New">Used - Like New</option>
+                  <option value="Used - Good">Used - Good</option>
+                  <option value="Used - Fair">Used - Fair</option>
+                  <option value="Used - Poor">Used - Poor</option>
+                  <option value="For Parts or Not Working">For Parts or Not Working</option>
                 </select>
               </div>
             </div>
@@ -228,37 +225,31 @@ function SellerDashboard() {
           </div>
 
           {/* Preview section listing users given specs */}
-          <div className="listing-section col-2">
+          <div className="listing-section col-3">
             <div className="product-details-container">
-              <div className="seller-input-container">
-                <div className="listing-title">
+              <div className="seller-preview-container">
+                <div className="preview-listing-title">
                   <b>Title</b> {title}
                 </div>
-                <div className="listing-price">
-                  <b>Price</b> {price}
+                <div className="preview-listing-price">
+                  ${price}
                 </div>
-                <div className="listing-duration">
+                <div className="preview-listing-duration">
                   Listed (2 seconds ago) in {location}
                 </div>
-                <div className="listing-details-section">
+                <div className="preview-listing-details-section">
                   <b>Details</b>
                 </div>
-                <div className="listing-description-section">
+                <div className="preview-listing-description-section">
                   {description}
                 </div>
                 <hr />
-                <input
-                  placeholder="Category"
-                  className="seller-input-form"
-                  value={category} // Pre-fill with category state variable
-                  readOnly // Make category non-editable (optional)
-                />
-                <input
-                  placeholder="Condition"
-                  className="seller-input-form"
-                  value={condition} // Pre-fill with condition state variable
-                  readOnly // Make condition non-editable (optional)
-                />
+                <div className="preview-listing-category-section">
+                    <b>Category:</b> {category}
+                </div>
+                <div className="preview-listing-condition-section">
+                    <b>Condition:</b> {condition}
+                </div>    
               </div>
             </div>
             <hr />
