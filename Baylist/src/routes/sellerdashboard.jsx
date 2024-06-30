@@ -1,6 +1,7 @@
 import "../scss/sellerdashboard.css";
 import "../scss/styles.scss";
 import React, { useState, useEffect } from "react";
+import ImageUpload from 'react-image-upload';
 
 function SellerDashboard() {
   // Assuming a function to get uploaded image URLs (replace with your implementation)
@@ -8,12 +9,18 @@ function SellerDashboard() {
     // Logic to retrieve uploaded image URLs from your application state or storage
     return ["image1.jpg", "image2.png"]; // Replace with actual URLs
   };
+  const onImageUpload = (imageFile) => {
+    // Handle uploaded image file (e.g., display preview, upload to server)
+    console.log(imageFile);
+  };
+
+  
 
   // State variables for form data
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("0");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Collectibles & Art");
   const [condition, setCondition] = useState("New");
   const [location, setLocation] = useState("Location."); // State for location
 
@@ -104,16 +111,31 @@ function SellerDashboard() {
               Photos • {getUploadedImageURLs().length} / 10, Videos • # / 1
             </div>
             <div className="add-media">
-              <button type="submit" className="add-photo-button">
-                <img src="../assets/baylistlogo.png" alt="Baylist Logo" />
-                <b>Add Photos</b> or drag and drop
-              </button>
-              <div className="add-videos">
-                <button type="submit" className="add-video-button">
-                  <img src="../assets/baylistlogo.png" alt="Baylist Logo" />
-                  <b>Add Videos</b> or drag and drop
-                </button>
-              </div>
+                <ImageUpload
+                    withPreview
+                    buttonText="Add Photos"
+                    onChange={onImageUpload}
+                    singleFile={true} // Allow only single image selection (optional)
+                    accept="image/*" // Restrict file types (optional)
+                    previewStyle={{ maxWidth: '300px', maxHeight: '300px' }}
+                    style={{
+                        backgroundColor: "#782ade",
+                        color: "#fff",
+                        margin: "25px",
+                        padding: "0px",
+                        borderRadius: "15px",
+                        cursor: "pointer",
+                        display: "flex",
+                    }}
+                />
+                {/*
+                <div className="add-videos">
+                    <button type="submit" className="add-video-button">
+                        <img src="../assets/baylistlogo.png" alt="Baylist Logo" />
+                    <b>Add Videos</b> or drag and drop
+                    </button>
+                    <input type="file" id="add-videos-input" accept="video/*" />
+                </div> */}
             </div>
             <div className="required-section">
               <b>Required</b>
