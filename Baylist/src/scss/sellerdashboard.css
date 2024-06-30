@@ -82,6 +82,7 @@
   
   .preview-section {
     background: black;
+    //width: 100%;
   }
   
   .preview-h1, .preview-h3 {
@@ -165,15 +166,18 @@
     display: inline-block;
   }
   .preview-image {
-    width: 150px;  /* Set the desired width */
-    height: 150px; /* Set the desired height */
+    width: 250px;  /* Set the desired width */
+    height: 250px; /* Set the desired height */
     object-fit: cover; /* Ensures the image covers the given dimensions */
-    margin: 10px; /* Add some margin for spacing */
+    margin: 250px; /* Add some margin for spacing */
   }
-  
+  .preview-h1, .preview-h3 {
+    index: 0;
+  }
   .image-preview {
     display: inline-block; /* Keep images in a row */
     position: relative; /* Needed for positioning the remove button */
+    index: 1;
   }
   
   .image-preview button {
@@ -186,4 +190,21 @@
     padding: 5px;
     cursor: pointer;
     border-radius: 5px;
+  }
+  .slideshow-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+  }
+  
+  .image-slide {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+  
+  .image-slide.active {
+    display: block;
+    opacity: 1;
   }

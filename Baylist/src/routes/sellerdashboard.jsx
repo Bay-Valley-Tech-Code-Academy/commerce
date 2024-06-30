@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../scss/sellerdashboard.css";
 import "../scss/styles.scss";
 
@@ -10,6 +10,7 @@ function SellerDashboard() {
   const [category, setCategory] = useState("Collectibles & Art");
   const [condition, setCondition] = useState("New");
   const [location, setLocation] = useState("Location.");
+  const [currentIndex, setCurrentIndex] = useState(0); // Track current image index
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -18,7 +19,21 @@ function SellerDashboard() {
   };
 
   const handleRemoveImage = (imageUrl) => {
-    setUploadedImages((prevImages) => prevImages.filter((image) => image !== imageUrl));
+    setUploadedImages((prevImages) =>
+      prevImages.filter((image) => image !== imageUrl)
+    );
+  };
+
+  const handlePrevImage = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? uploadedImages.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNextImage = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === uploadedImages.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
   useEffect(() => {
@@ -37,13 +52,19 @@ function SellerDashboard() {
             .then((data) => {
               if (data.length > 0) {
                 const firstResult = data[0];
-                const city = firstResult.address?.city || firstResult.display_name.split(",")[2].trim();
-                const state = firstResult.address?.state || firstResult.display_name.split(",")[4].trim();
+                const city =
+                  firstResult.address?.city ||
+                  firstResult.display_name.split(",")[2].trim();
+                const state =
+                  firstResult.address?.state ||
+                  firstResult.display_name.split(",")[4].trim();
                 setLocation(`${city}, ${state}.`);
               }
             })
             .catch((error) => {
-              console.warn(`Error fetching location data from Nominatim: ${error.message}`);
+              console.warn(
+                `Error fetching location data from Nominatim: ${error.message}`
+              );
             });
         },
         (error) => {
@@ -95,7 +116,7 @@ function SellerDashboard() {
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   min="0"
-                  maxLength="8"
+                  maxLength="5"
                 />
                 <textarea
                   className="seller-input-form"
@@ -103,7 +124,9 @@ function SellerDashboard() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
-                <label htmlFor="category-select"><b>Category</b></label>
+                <label htmlFor="category-select">
+                  <b>Category</b>
+                </label>
                 <select
                   id="category-select"
                   name="category"
@@ -117,7 +140,9 @@ function SellerDashboard() {
                   <option value="Sports & Outdoors">Sports & Outdoors</option>
                   <option value="Toys & Games">Toys & Games</option>
                 </select>
-                <label htmlFor="condition-select"><b>Condition</b></label>
+                <label htmlFor="condition-select">
+                  <b>Condition</b>
+                </label>
                 <select
                   id="condition-select"
                   name="condition"
@@ -129,7 +154,9 @@ function SellerDashboard() {
                   <option value="Used - Good">Used - Good</option>
                   <option value="Used - Fair">Used - Fair</option>
                   <option value="Used - Poor">Used - Poor</option>
-                  <option value="For Parts or Not Working">For Parts or Not Working</option>
+                  <option value="For Parts or Not Working">
+                    For Parts or Not Working
+                  </option>
                 </select>
               </div>
             </div>
@@ -147,25 +174,43 @@ function SellerDashboard() {
             </div>
           </div>
         </div>
-        <div className="preview-container col-8">
+        <div className="preview-container">
           <div className="preview-section">
             <div className="preview-section-image-container">
-              {uploadedImages.map((imageUrl, index) => (
-                <div key={index} className="image-preview">
+              {uploadedImages.length > 0 && (
+              <div className="slideshow-container">
+                {/* Left arrow */}
+                <button className="prev" onClick={handlePrevImage}>
+                  &#10094;
+                </button>
+
+                {/* Image display */}
+                <div className="image-preview">
                   <img
-                    src={imageUrl}
+                    src={uploadedImages[currentIndex]}
                     alt="Product Image Preview"
                     className="preview-image"
                   />
-                  <button onClick={() => handleRemoveImage(imageUrl)}>Remove</button>
+                  <button onClick={() => handleRemoveImage(uploadedImages[currentIndex])}>Remove</button>
                 </div>
-              ))}
+
+                {/* Right arrow */}
+                <button className="next" onClick={handleNextImage}>
+                  &#10095;
+                </button>
+              </div>
+              )}
             </div>
             <div className="preview-details-container">
-              <h1 className="preview-h1">Your listing preview</h1>
-              <h3 className="preview-h3">
-                As you create your listing, you can preview how it will appear to others.
-              </h3>
+              {/* Conditionally render the preview details container */}
+              {uploadedImages.length === 0 && (
+                <div className="preview-details-container">
+                  <h1 className="preview-h1">Your listing preview</h1>
+                  <h3 className="preview-h3">
+                    As you create your listing, you can preview how it will appear to others.
+                  </h3>
+                </div>
+              )}
             </div>
           </div>
           <div className="listing-section col-3">
@@ -174,9 +219,7 @@ function SellerDashboard() {
                 <div className="preview-listing-title">
                   <b>Title</b> {title}
                 </div>
-                <div className="preview-listing-price">
-                  ${price}
-                </div>
+                <div className="preview-listing-price">${price}</div>
                 <div className="preview-listing-duration">
                   Listed (2 seconds ago) in {location}
                 </div>
@@ -196,9 +239,7 @@ function SellerDashboard() {
               </div>
             </div>
             <hr />
-            <div className="seller-info">
-              Seller Info
-            </div>
+            <div className="seller-info">Seller Info</div>
             <button className="message-seller-button">Message Seller</button>
           </div>
         </div>
