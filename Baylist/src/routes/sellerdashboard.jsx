@@ -1,58 +1,31 @@
+import React, { useState, useEffect } from "react";
 import "../scss/sellerdashboard.css";
 import "../scss/styles.scss";
-import React, { useState, useEffect } from "react";
-import ImageUpload from 'react-image-upload';
 
 function SellerDashboard() {
-  // Assuming a function to get uploaded image URLs (replace with your implementation)
-  const getUploadedImageURLs = () => {
-    // Logic to retrieve uploaded image URLs from your application state or storage
-    return ["image1.jpg", "image2.png"]; // Replace with actual URLs
-  };
-  const onImageUpload = (imageFile) => {
-    // Handle uploaded image file (e.g., display preview, upload to server)
-    console.log(imageFile);
-  };
-
-  
-
-  // State variables for form data
+  const [uploadedImages, setUploadedImages] = useState([]);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("0");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Collectibles & Art");
   const [condition, setCondition] = useState("New");
-  const [location, setLocation] = useState("Location."); // State for location
+  const [location, setLocation] = useState("Location.");
 
-  // Update functions for form fields
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
+  const handleImageUpload = (event) => {
+    const files = Array.from(event.target.files);
+    const newImages = files.map(file => URL.createObjectURL(file));
+    setUploadedImages(prevImages => [...prevImages, ...newImages]);
   };
 
-  const handlePriceChange = (event) => {
-    setPrice(event.target.value);
-  };
+  useEffect(() => {
+    getLocation();
+  }, []);
 
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
-  };
-
-  const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
-  };
-
-  const handleConditionChange = (event) => {
-    setCondition(event.target.value);
-  };
-
-
-  // Function to handle location retrieval using Nominatim geocoding API
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-
           const nominatimUrl = `https://nominatim.openstreetmap.org/search?q=${latitude},${longitude}&format=json`;
 
           fetch(nominatimUrl)
@@ -60,82 +33,48 @@ function SellerDashboard() {
             .then((data) => {
               if (data.length > 0) {
                 const firstResult = data[0];
-                const city = firstResult.address?.city || firstResult.display_name.split(',')[2].trim();
-                const state = firstResult.address?.state || firstResult.display_name.split(',')[4].trim();
+                const city = firstResult.address?.city || firstResult.display_name.split(",")[2].trim();
+                const state = firstResult.address?.state || firstResult.display_name.split(",")[4].trim();
                 setLocation(`${city}, ${state}.`);
-              } else {
-                console.warn("No location data found from Nominatim response.");
-                // Handle case where no location data is available (e.g., display a fallback message)
               }
             })
             .catch((error) => {
               console.warn(`Error fetching location data from Nominatim: ${error.message}`);
-              // Handle API request errors gracefully (e.g., display a fallback message)
             });
         },
         (error) => {
           console.warn(`Error getting location: ${error.message}`);
-          // Handle location retrieval error (e.g., permission denied)
         }
       );
     } else {
       console.warn("Geolocation is not supported by this browser.");
-      // Handle case where geolocation is not supported
     }
   };
 
-  // Get location on component mount
-  useEffect(() => {
-    getLocation();
-  }, []);
-
-
-  // Get location on component mount (optional)
-  useEffect(() => {
-    getLocation();
-  }, []); // Empty dependency array to run only once on mount
-
   return (
     <div className="seller-dashboard-container">
-      {/* Desktop Dashboard */}
       <div className="desktop-dashboard">
         <div className="listing-column">
-          {/* Listing Header */}
           <div className="listing-header">
             <div className="item-name">Item for sale</div>
             <button className="save-draft-button">Save Draft</button>
           </div>
-          {/* Media Upload */}
           <div className="media-upload-container">
             <div className="media-count">
-              Photos • {getUploadedImageURLs().length} / 10, Videos • # / 1
+              Photos • {uploadedImages.length} of 10
             </div>
             <div className="add-media">
-                <ImageUpload
-                    withPreview
-                    buttonText="Add Photos"
-                    onChange={onImageUpload}
-                    singleFile={true} // Allow only single image selection (optional)
-                    accept="image/*" // Restrict file types (optional)
-                    previewStyle={{ maxWidth: '300px', maxHeight: '300px' }}
-                    style={{
-                        backgroundColor: "#782ade",
-                        color: "#fff",
-                        margin: "25px",
-                        padding: "0px",
-                        borderRadius: "15px",
-                        cursor: "pointer",
-                        display: "flex",
-                    }}
-                />
-                {/*
-                <div className="add-videos">
-                    <button type="submit" className="add-video-button">
-                        <img src="../assets/baylistlogo.png" alt="Baylist Logo" />
-                    <b>Add Videos</b> or drag and drop
-                    </button>
-                    <input type="file" id="add-videos-input" accept="video/*" />
-                </div> */}
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+                style={{ display: "none" }}
+                id="file-upload"
+              />
+              <label htmlFor="file-upload" className="custom-file-upload">
+                Add Photos
+              </label>
             </div>
             <div className="required-section">
               <b>Required</b>
@@ -143,58 +82,48 @@ function SellerDashboard() {
                 Be as descriptive as possible.
               </div>
               <div className="seller-input-container">
-                <div className="listing-title">
-                  <input
-                    type="text"
-                    className="seller-input-form"
-                    placeholder="Title"
-                    value={title} // Update title with state variable
-                    onChange={handleTitleChange} // Trigger update on change
-                  />
-                </div>
-                <div className="listing-price">
-                  <input
-                    type="number"
-                    className="seller-input-form"
-                    placeholder="Enter Price ($)"
-                    value={price} // Update price with state variable
-                    onChange={handlePriceChange} // Trigger update on change
-                    min="0"
-                    maxLength="8"
-                  />
-                </div>
-                <div className="details-section">
-                  <b>Description</b>
-                </div>
-                <div className="description-section">
-                  <textarea
-                    className="seller-input-form"
-                    placeholder="Enter Detailed Description"
-                    value={description} // Update description with state variable
-                    onChange={handleDescriptionChange} // Trigger update on change
-                  />
-                </div>
-                <label htmlFor="listing-category-select"><b>Category</b></label>
+                <input
+                  type="text"
+                  className="seller-input-form"
+                  placeholder="Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <input
+                  type="number"
+                  className="seller-input-form"
+                  placeholder="Enter Price ($)"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  min="0"
+                  maxLength="8"
+                />
+                <textarea
+                  className="seller-input-form"
+                  placeholder="Enter Detailed Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+                <label htmlFor="category-select"><b>Category</b></label>
                 <select
-                  id="condition-select"
+                  id="category-select"
                   name="category"
-                  value={category} // Update category with state variable
-                  onChange={handleCategoryChange} // Trigger update on change
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
                 >
                   <option value="Collectibles and Art">Collectibles & Art</option>
                   <option value="Clothing">Clothing</option>
                   <option value="Electronics">Electronics</option>
                   <option value="Home & Garden">Home & Garden</option>
                   <option value="Sports & Outdoors">Sports & Outdoors</option>
-                
-                <option value="Toys & Games">Toys & Games</option>
+                  <option value="Toys & Games">Toys & Games</option>
                 </select>
-                <label htmlFor="listing-condition-select"><b>Condition</b></label>
+                <label htmlFor="condition-select"><b>Condition</b></label>
                 <select
                   id="condition-select"
                   name="condition"
-                  value={condition} // Update condition with state variable
-                  onChange={handleConditionChange} // Trigger update on change
+                  value={condition}
+                  onChange={(e) => setCondition(e.target.value)}
                 >
                   <option value="New">New</option>
                   <option value="Used - Like New">Used - Like New</option>
@@ -219,34 +148,26 @@ function SellerDashboard() {
             </div>
           </div>
         </div>
-
-        {/* Preview Section */}
         <div className="preview-container col-8">
           <div className="preview-section">
-            {/* Preview Image Container */}
             <div className="preview-section-image-container">
-              {/* Loop through uploaded image URLs and display them */}
-              {getUploadedImageURLs().map((imageUrl) => (
+              {uploadedImages.map((imageUrl, index) => (
                 <img
-                  key={imageUrl} // Add a unique key for each image
+                  key={index}
                   src={imageUrl}
                   alt="Product Image Preview"
                   className="preview-image"
+                  style={{ maxWidth: '300px', maxHeight: '300px' }}
                 />
               ))}
             </div>
-
-            {/* Preview Details Container */}
             <div className="preview-details-container">
               <h1 className="preview-h1">Your listing preview</h1>
               <h3 className="preview-h3">
-                As you create your listing, you can preview how it will appear
-                to others.
+                As you create your listing, you can preview how it will appear to others.
               </h3>
             </div>
           </div>
-
-          {/* Preview section listing users given specs */}
           <div className="listing-section col-3">
             <div className="product-details-container">
               <div className="seller-preview-container">
@@ -267,20 +188,17 @@ function SellerDashboard() {
                 </div>
                 <hr />
                 <div className="preview-listing-category-section">
-                    <b>Category:</b> {category}
+                  <b>Category:</b> {category}
                 </div>
                 <div className="preview-listing-condition-section">
-                    <b>Condition:</b> {condition}
-                </div>    
+                  <b>Condition:</b> {condition}
+                </div>
               </div>
             </div>
             <hr />
-            {/* Seller Information Section (add your content here) */}
             <div className="seller-info">
-              {/* Seller information section content */}
               Seller Info
             </div>
-            {/* Call to action button (optional) */}
             <button className="message-seller-button">Message Seller</button>
           </div>
         </div>
@@ -290,9 +208,3 @@ function SellerDashboard() {
 }
 
 export default SellerDashboard;
-
-// Assuming a function to get product description (replace with your implementation)
-const getProductDescription = () => {
-  // Logic to retrieve product description from your application state or user input
-  return "This is a detailed description of the awesome product.";
-};
