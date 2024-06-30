@@ -13,8 +13,12 @@ function SellerDashboard() {
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
-    const newImages = files.map(file => URL.createObjectURL(file));
-    setUploadedImages(prevImages => [...prevImages, ...newImages]);
+    const newImages = files.map((file) => URL.createObjectURL(file));
+    setUploadedImages((prevImages) => [...prevImages, ...newImages]);
+  };
+
+  const handleRemoveImage = (imageUrl) => {
+    setUploadedImages((prevImages) => prevImages.filter((image) => image !== imageUrl));
   };
 
   useEffect(() => {
@@ -66,15 +70,10 @@ function SellerDashboard() {
             <div className="add-media">
               <input
                 type="file"
-                accept="image/*"
                 multiple
+                accept="image/*"
                 onChange={handleImageUpload}
-                style={{ display: "none" }}
-                id="file-upload"
               />
-              <label htmlFor="file-upload" className="custom-file-upload">
-                Add Photos
-              </label>
             </div>
             <div className="required-section">
               <b>Required</b>
@@ -152,13 +151,14 @@ function SellerDashboard() {
           <div className="preview-section">
             <div className="preview-section-image-container">
               {uploadedImages.map((imageUrl, index) => (
-                <img
-                  key={index}
-                  src={imageUrl}
-                  alt="Product Image Preview"
-                  className="preview-image"
-                  style={{ maxWidth: '300px', maxHeight: '300px' }}
-                />
+                <div key={index} className="image-preview">
+                  <img
+                    src={imageUrl}
+                    alt="Product Image Preview"
+                    className="preview-image"
+                  />
+                  <button onClick={() => handleRemoveImage(imageUrl)}>Remove</button>
+                </div>
               ))}
             </div>
             <div className="preview-details-container">

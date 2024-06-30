@@ -164,3 +164,26 @@
     cursor: pointer;
     display: inline-block;
   }
+  .preview-image {
+    width: 150px;  /* Set the desired width */
+    height: 150px; /* Set the desired height */
+    object-fit: cover; /* Ensures the image covers the given dimensions */
+    margin: 10px; /* Add some margin for spacing */
+  }
+  
+  .image-preview {
+    display: inline-block; /* Keep images in a row */
+    position: relative; /* Needed for positioning the remove button */
+  }
+  
+  .image-preview button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
