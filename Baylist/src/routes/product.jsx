@@ -1,20 +1,18 @@
-import { useLocation } from 'react-router-dom';
 import fakeProductImage from '../assets/duck-product.jpg'
 import "../scss/product.css"
 
 function ProductDetail() {
-    const location = useLocation();
 
     return (
 <main>
         {/* Column 1 */}
-    <div className="container my-5">
+    <div className="container">
         <div className="row">
-            <div className="col-md-4 mb-4">
+            <div className="col-4">
                 <img src={fakeProductImage} className="product-image"/>
             </div>
         {/* {Column 2} */}
-            <div className="col-md-5 mb-4">
+            <div className="col-4">
                 <div className="item-name-container">
                     <div className="item-name">Item Name</div>
                 </div>    
@@ -22,7 +20,7 @@ function ProductDetail() {
                     <div className="rating-count">{25} Reviews</div>
                     <div className="avg-rating"> Avg Rating: {5} Stars</div>
                 </div>
-                <a href="https://www.what.com" className="seller-name-container">
+                <a href="" className="seller-name-container">
                     <div className="seller-Name">Seller Name</div>
                 </a>    
                 <div className="price-container">
@@ -33,7 +31,7 @@ function ProductDetail() {
                 </div>
             </div>
         {/* {Column 3} */}
-            <div className="col-md-2 mb-4">
+            <div className="col-3">
                 <div className="buying-buttons-container">
                     <div className="shipping-date-container">
                         <div className="shipping-date"> Estimated Shipping Date: June 31</div>
@@ -51,13 +49,13 @@ function ProductDetail() {
             </div>
         </div>
         <div className="row">
-                    <div className="col-md-12 mb-4">
+                    <div className="col-md-12">
                          <div className="user-reviews">User Reviews</div>
                         <div className="review-card-container">
                             <div className="review-card"><p>5 Stars</p> User 1: Yeah I liked it</div>
                             <div className="review-card"><p>4 Stars</p>Charles Brown: Works great, but arrived slightly damaged</div>
                             <div className="review-card"><p>5 Stars</p> User 3: Arrived working fantastic!</div>
-                            <div className="review-card"><p>1 Star</p> User 4: I'm a hater so 1 star</div>
+                            <div className="review-card"><p>1 Star</p> User 4: Im a hater so 1 star</div>
                         </div>  
                     </div>
         </div>            
