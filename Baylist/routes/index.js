@@ -1,20 +1,20 @@
 // Baylist/routes/index.js
 
 import express from 'express';
-import db from '../config/db.js';
+import pool from '../config/db.js';
 
 const router = express.Router();
 
 // Example route to get products
-router.get('/products', (req, res) => {
-    const query = 'SELECT * FROM products'; // Adjust this query to match your database schema
-
-    db.query(query, (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
+router.get('/products', async (req, res) => {
+    try {
+        const [results] = await pool.query('SELECT * FROM products'); // Adjust this query to match your database schema
         res.json(results);
-    });
+        console.log(res.json(results));
+    } catch (err) {
+        console.error('Error fetching products:', err); // Log the error
+        res.status(500).json({ error: err.message });
+    }
 });
 
 export default router;
