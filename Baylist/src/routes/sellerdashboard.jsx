@@ -67,9 +67,16 @@ function SellerDashboard() {
   };
 
   const handleRemoveImage = (imageUrl) => {
-    setUploadedImages((prevImages) =>
-      prevImages.filter((image) => image !== imageUrl)
-    );
+    setUploadedImages((prevImages) => {
+      const updatedImages = prevImages.filter((image) => image !== imageUrl);
+      // Adjust current index if necessary
+      if (currentIndex >= updatedImages.length && updatedImages.length > 0) {
+        setCurrentIndex(updatedImages.length - 1);
+      } else if (updatedImages.length === 0) {
+        setCurrentIndex(0);
+      }
+      return updatedImages;
+    });
   };
 
   const handlePrevImage = () => {
