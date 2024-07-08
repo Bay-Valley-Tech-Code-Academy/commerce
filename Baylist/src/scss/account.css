@@ -1,0 +1,48 @@
+
+.account-page{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #BB92E9;
+}
+
+.account-info-container{
+    border: 1px solid #DCC3F9;
+    border-radius: 2%;
+    background-color: #DCC3F9;
+    margin-right: 50px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    width: 500px;
+    height: 525px;
+
+}
+
+.account-info-forms-container{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.account-info-form{
+    display: flex;
+    width: 400px;
+    margin-left: 60px;
+}
+
+.account-form-label{
+    display: flex;
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.profile-picture{
+    margin-top: 50px;
+    width: 250px;
+    border-radius: 100%;
+}
+
+.profile-picture-container{
+    margin-left: 250px;
+}
