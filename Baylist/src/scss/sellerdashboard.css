@@ -4,13 +4,129 @@ main {
 }
 
 .seller-dashboard-container{
+.seller-dashboard-container {
     border: 2px solid black;
-    width: 400px;
+    width: 100%;
     height: 600px;
     background-color: #BB92E9;
-}
+  }
+  
+  .seller-input-form {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    height: 40px;
+    margin: 5px;
+    text-align: left;
+    width: 280px;
+  }
+  
+  .seller-input-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .listing-column {
+    //overflow-y: auto;
+    max-width: 550px;
+  }
 
-.add-photos-button-container{
+  .listing-header {
+    display: flex;
+  }
+  
+  .item-name {
+    background-color: transparent;
+    text-decoration: underline;
+  }
+
+  .save-draft-button {
+    background-color: lightblue;
+    margin-left: 13px;
+    margin-top: 12px;
+    color: black;
+    border-radius: 5%;
+    padding: 5px;
+    height: 40px;
+  }
+
+  .listing-section {
+    font-size: 20px;
+  }
+  
+  .listing-price {
+    color: #782ade;
+    font-weight: bold;
+  }
+
+  .progress-section {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #BB92E9;
+  }
+  
+  .progress-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+  }
+  
+  .desktop-dashboard {
+    border: 0px solid black;
+    width: 100vw;
+    height: 100%;
+    background-color: #BB92E9;
+    display: flex;
+  }
+  
+  .media-count {
+    margin-left: 5px;
+    display: flex;
+  }
+  
+  .add-media {
+    margin-left: 5px;
+    display: flex;
+    gap: 1px;
+  }
+  
+  .add-photo-button, .add-video-button {
+    width: 150px;
+    height: 150px;
+    display: inline;
+  }
+  
+  .required-section {
+    display: block;
+  }
+  
+  .description-tip {
+    display: block;
+    text-indent: 1px;
+  }
+  
+  .preview-container {
+    display: flex;
+  }
+  
+  .preview-section {
+    background: #782ade;
+    //width: 100%;
+  }
+
+  .preview-h1, .preview-h3 {
+    color: white;
+    padding: 25px;
+    text-shadow: 1px 1px 2px black;
+  }
+  
+
+  .add-photos-button-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,54 +140,173 @@ main {
 }
 
 .dashboard-title-container{
+  }
+  
+  .dashboard-title-container {
     display: flex;
     justify-content: space-between;
-}
-
-.dashboard-title{
+  }
+  
+  .dashboard-title {
     font-size: 20px;
     margin: 20px;
     margin-top: 5px;
     border-radius: 3%;
     padding: 2px;
-}
-
-.save-draft-button{
-    background-color: lightblue;
-    margin-right: 10px;
-    text-decoration: none;
-    color: black;
-    border-radius: 5%;
-    padding: 5px;
-    height: 40px;
-
-}
-.add-photos-button-container-container{
+  }
+  
+  .add-photos-button-container-container {
     display: flex;
     justify-content: center;
-}
-
-.dashboard-website-name{
+  }
+  
+  .dashboard-website-name {
     display: flex;
     margin: 10px;
     font-size: 15px;
-}
-
-.required-forms-container{
+  }
+  
+  .required-forms-container {
     display: flex;
     margin: 10px;
     font-size: 20px;
-}
+  }
+  
+  .listing-section {
+    text-align: left;
+    margin-left: 5px;
+    display: column;
+  }
+  .custom-file-upload {
+    background-color: #782ade;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .preview-image {
+    width: 250px;  /* Set the desired width */
+    height: 250px; /* Set the desired height */
+    object-fit: cover; /* Ensures the image covers the given dimensions */
+    margin: 250px; /* Add some margin for spacing */
+  }
+  .preview-h1, .preview-h3 {
+    index: 0;
+  }
+  .image-preview {
+    display: inline-block; /* Keep images in a row */
+    position: relative; /* Needed for positioning the remove button */
+    index: 1;
+  }
+  
+  .image-preview button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .slideshow-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    display: flex; /* Ensure it's a flex container */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+  }
+  
+  .image-slide {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+  
+  .image-slide.active {
+    display: block;
+    opacity: 1;
+  }
 
-.seller-input-form{
-    background-color: white;
-    border: 1px solid black;
-    color: black;
-    height: 40px;
-    margin: 5px;
-}
+  /* Media query for mobile devices */
+@media (max-width: 600px) {
+  .seller-dashboard-container {
+    height: 800px;
+    flex: 1;
+    //background-color: #BB92E9;
+  }
 
-.seller-input-container{
-    display: flex;
+  .desktop-dashboard {
     flex-direction: column;
+    display: flex;
+    overflow-y: auto; /* Enable scrolling if needed */
+  }
+
+  .listing-column {
+    max-width: 100%;
+    flex: 1; /* Ensure it takes full height */
+    height: 1150px;
+    //overflow-y: auto; /* Enable scrolling if needed */
+  }
+
+  .media-count {
+    justify-content: center;
+  }
+
+  .add-media {
+    justify-content: center;
+  }
+
+  .add-photo-button,
+  .add-video-button {
+    width: 100px;
+    height: 100px;
+  }
+
+  .required-section {
+    text-align: center;
+  }
+
+  .listing-section {
+    font-size: 16px;
+    margin-left: 0;
+    text-align: center;
+    flex: 1; /* Ensure it takes full height */
+  }
+  .progress-section {
+    background-color: transparent;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .progress-bar {
+    display: flex;
+    //justify-content: space-between;
+    //align-items: flex-end;
+    width: 100%;
+  }
+  .preview-container {
+    flex-direction: column;
+    //flex: 1; /* Ensure it takes full height */
+  }
+
+  .preview-section {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .preview-image {
+    width: 100%;
+    height: auto;
+    margin: 10px 0;
+  }
+
+  .image-preview button {
+    top: -10px;
+    right: -10px;
+    padding: 3px;
+  }
 }

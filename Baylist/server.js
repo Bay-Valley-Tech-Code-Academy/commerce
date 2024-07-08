@@ -1,15 +1,33 @@
-// Baylist/server.js
-
 import express from 'express';
-import db from './config/db.js';
-import routes from './routes/index.js';
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv'; // Import dotenv for loading environment variables
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use('/api', routes);
+const initializeDatabase = async () => {
+  try {
+    const connection = await mysql.createConnection({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+    });
+    console.log('Connected to the MySQL database! You\'re using:', process.env.DB_NAME );
+    await connection.end(); // Close the connection after use
+  } catch (error) {
+    console.error('Error connecting to the database:', error);
+  }
+};
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+// Initialize database connection on application start
+initializeDatabase();
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
+
+app.listen
