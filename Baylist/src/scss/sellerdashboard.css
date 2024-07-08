@@ -277,7 +277,6 @@
     //align-items: flex-end;
     width: 100%;
   }
-
   .preview-container {
     flex-direction: column;
     //flex: 1; /* Ensure it takes full height */

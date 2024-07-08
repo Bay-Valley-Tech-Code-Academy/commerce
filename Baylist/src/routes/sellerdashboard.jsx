@@ -11,6 +11,54 @@ function SellerDashboard() {
   const [condition, setCondition] = useState("New");
   const [location, setLocation] = useState("Location.");
   const [currentIndex, setCurrentIndex] = useState(0); // Track current image index
+  const [progress, setProgress] = useState(0); // Progress percentage
+
+  const PROGRESS_WEIGHTS = {
+    images: 20,
+    title: 20,
+    price: 20,
+    description: 20,
+    category: 10,
+    condition: 10,
+  };
+
+  const handleInputChange = (field, value) => {
+    switch (field) {
+      case "title":
+        setTitle(value);
+        break;
+      case "price":
+        setPrice(value);
+        break;
+      case "description":
+        setDescription(value);
+        break;
+      case "category":
+        setCategory(value);
+        break;
+      case "condition":
+        setCondition(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    updateProgress();
+  }, [uploadedImages, title, price, description, category, condition]);
+
+  const updateProgress = () => {
+    let totalProgress = 0;
+    if (uploadedImages.length > 0) totalProgress += PROGRESS_WEIGHTS.images;
+    if (title) totalProgress += PROGRESS_WEIGHTS.title;
+    if (price > 0) totalProgress += PROGRESS_WEIGHTS.price;
+    if (description) totalProgress += PROGRESS_WEIGHTS.description;
+    if (category) totalProgress += PROGRESS_WEIGHTS.category;
+    if (condition) totalProgress += PROGRESS_WEIGHTS.condition;
+
+    setProgress(totalProgress);
+  };
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -163,8 +211,13 @@ function SellerDashboard() {
             <div className="progress-section">
               <hr />
               <div className="progress-bar-container">
-                <progress className="progress-bar" id="file" value="50" max="100">
-                  50%
+                <progress
+                  className="progress-bar"
+                  id="file"
+                  value={progress}
+                  max="100"
+                >
+                  {progress}%
                 </progress>
               </div>
               <hr />
