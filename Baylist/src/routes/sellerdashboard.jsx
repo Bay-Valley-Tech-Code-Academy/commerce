@@ -160,14 +160,14 @@ function SellerDashboard() {
                 <input
                   type="text"
                   className="seller-input-form"
-                  placeholder="Title"
+                  placeholder="Title of Product"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
                 <input
                   type="number"
                   className="seller-input-form"
-                  placeholder="Enter Price ($)"
+                  placeholder="Enter Price (USD $)"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   min="0"
@@ -280,6 +280,7 @@ function SellerDashboard() {
                   <b>Title</b> {title}
                 </div>
                 <div className="preview-listing-price">${price}</div>
+                { /* THIS SECTION IS TO BE UPDATED LATER WHEN POSTING IS WORKING ACCURATELY */}
                 <div className="preview-listing-duration">
                   Listed (2 seconds ago) in {location}
                 </div>
