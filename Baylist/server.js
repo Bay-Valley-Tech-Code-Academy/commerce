@@ -3,7 +3,7 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv'; // Import dotenv for loading environment variables
-import router from './routes/index.js'; // Adjust path as needed
+import productsRoute from './routes/index.js'; // Adjust path as needed
 
 // Load environment variables from .env file
 dotenv.config();
@@ -36,7 +36,7 @@ const initializeDatabase = async () => {
 };
 
 // Import and use routes
-app.use('/api', router); // Use the productsRoute function with the pool
+app.use('/api', productsRoute); // Use the productsRoute function with the pool
 
 // Start the server
 app.listen(port, () => {
