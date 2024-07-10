@@ -4,11 +4,12 @@ import express from 'express';
 import * as middleware from '../middleware/middleware.js';
 
 const router = express.Router();
+const tableName = 'product';
 
 // GET all products
-router.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const products = await middleware.executeQuery('SELECT * FROM products');
+        const products = await middleware.executeQuery('SELECT * FROM product');
         res.json(products);
     } catch (error) {
         res.status(500).json({ error: 'Error fetching products' });
@@ -19,7 +20,7 @@ router.get('/products', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const productId = req.params.id;
     try {
-        const product = await middleware.getById('products', productId);
+        const product = await middleware.getById(tableName, productId);
         res.json(product[0]);
     } catch (error) {
         res.status(500).json({ error: 'Error fetching product' });
@@ -30,7 +31,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     const data = req.body;
     try {
-        const productId = await middleware.createEntity('products', data);
+        const productId = await middleware.createEntity(tableName, data);
         res.status(201).json({ id: productId });
     } catch (error) {
         res.status(500).json({ error: 'Error creating product' });
@@ -42,7 +43,7 @@ router.put('/:id', async (req, res) => {
     const productId = req.params.id;
     const data = req.body;
     try {
-        await middleware.updateById('products', productId, data);
+        await middleware.updateById(tableName, productId, data);
         res.json({ message: 'Product updated successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Error updating product' });
@@ -53,7 +54,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     const productId = req.params.id;
     try {
-        await middleware.deleteById('products', productId);
+        await middleware.deleteById(tableName, productId);
         res.json({ message: 'Product deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Error deleting product' });
