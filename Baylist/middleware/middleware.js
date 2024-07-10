@@ -14,14 +14,21 @@ export const executeQuery = async (query, params = []) => {
 };
 
 // Middleware to fetch a single entity by ID
-export const getById = async (table, id) => {
-    const query = `SELECT * FROM ${table} WHERE ${table}_id = ?`;
-    return await executeQuery(query, [id]);
+export const getById = async (tableName, id) => {
+    const query = `SELECT * FROM ${tableName} WHERE ${tableName}_id = ?`;
+    const result = await executeQuery(query, [id]);
+    if (result.length === 0) {
+        throw new Error(`${tableName} not found`);
+    }
+    return result[0]; // Return the first row found
 };
 
 // Middleware to handle INSERT or create an entity without worrying about id
 export const createEntity = async (table, data) => {
-    const fields = Object.keys(data).join(', ');
+    const fields = Object.keys(data).map(field => {
+        // Check if the field is 'condition' and wrap it in backticks if necessary
+        return field === 'condition' ? `\`${field}\`` : field;
+    }).join(', ');
     const values = Object.values(data);
     const placeholders = values.map(() => '?').join(', ');
 

@@ -21,8 +21,12 @@ router.get('/:id', async (req, res) => {
     const productId = req.params.id;
     try {
         const product = await middleware.getById(tableName, productId);
-        res.json(product[0]);
+        res.json(product); // Return the product object directly
     } catch (error) {
+        console.error('Error fetching product:', error.message);
+        if (error.message.includes('not found')) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
         res.status(500).json({ error: 'Error fetching product' });
     }
 });
@@ -30,6 +34,8 @@ router.get('/:id', async (req, res) => {
 // POST create product
 router.post('/', async (req, res) => {
     const data = req.body;
+    // Always include a creation timestamp
+    data.created_at = new Date().toISOString();
     try {
         const productId = await middleware.createEntity(tableName, data);
         res.status(201).json({ id: productId });
