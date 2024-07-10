@@ -1,6 +1,14 @@
 // Baylist/middlewares/dbMiddleware.js
+// throws generic errors from business logic but is not flooded with http specific codes
 
 import pool from '../config/db.js'; // Importing the pool from db.js
+
+// Middleware for input validation
+export const validateId = (id) => {
+    if (!id || isNaN(id) || !Number.isInteger(Number(id)) || id <= 0) {
+        throw new Error('Validation failed: invalid id');
+    }
+};
 
 // Middleware to execute SQL query
 export const executeQuery = async (query, params = []) => {
@@ -18,7 +26,7 @@ export const getById = async (tableName, id) => {
     const query = `SELECT * FROM ${tableName} WHERE ${tableName}_id = ?`;
     const result = await executeQuery(query, [id]);
     if (result.length === 0) {
-        throw new Error(`${tableName} not found`);
+        throw new Error(`${tableName} with ID ${id} not found`);
     }
     return result[0]; // Return the first row found
 };
@@ -39,12 +47,16 @@ export const createEntity = async (table, data) => {
 
 // Middleware to update an entity by ID
 export const updateById = async (table, id, data) => {
+    const existingEntity = await getById(table, id); // Check if entity with ID exists first
+    if (!existingEntity) {
+        throw new Error(`${table} with ID ${id} not found`);
+    }
     if (Object.keys(data).length === 0) {
         throw new Error('No fields provided for update');
     }
+
     const fields = Object.keys(data).map(field => `${field} = ?`).join(', ');
     const values = [...Object.values(data), id]; // Include ID for WHERE clause
-
     const query = `UPDATE ${table} SET ${fields} WHERE ${table}_id = ?`;
     const result = await executeQuery(query, values);
 

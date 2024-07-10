@@ -5,6 +5,7 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv'; // Import dotenv for loading environment variables
 import productRoute from './routes/product.js'; 
 import userRoute from './routes/user.js'; 
+import errorHandler from './middleware/errorHandler.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -39,6 +40,8 @@ const initializeDatabase = async () => {
 // Import and use routes
 app.use('/api/products', productRoute); // Use the productsRoute function with the pool
 app.use('/api/user', userRoute);
+
+app.use(errorHandler);
 
 // Start the server
 app.listen(port, () => {
