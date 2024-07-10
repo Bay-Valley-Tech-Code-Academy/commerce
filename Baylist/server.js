@@ -3,7 +3,7 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv'; // Import dotenv for loading environment variables
-import productsRoute from './routes/index.js'; // Adjust path as needed
+import productsRoute from './routes/products.js'; // Adjust path as needed
 
 // Load environment variables from .env file
 dotenv.config();

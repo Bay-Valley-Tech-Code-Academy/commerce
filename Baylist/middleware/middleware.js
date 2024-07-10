@@ -13,71 +13,38 @@ export const executeQuery = async (query, params = []) => {
     }
 };
 
-// Middleware to fetch a single product by ID
-export const getProductById = async (productId) => {
-    const query = 'SELECT * FROM products WHERE product_id = ?';
-    return await executeQuery(query, [productId]);
+// Middleware to fetch a single entity by ID
+export const getById = async (table, id) => {
+    const query = `SELECT * FROM ${table} WHERE ${table}_id = ?`;
+    return await executeQuery(query, [id]);
 };
 
-// Middleware to handle INSERT or create product without worrying about id
-export const createProduct = async (name, description, category, brand, condition, price, stock, created_at) => {
-    const query = 'INSERT INTO products (name, description, category, brand, `condition`, price, stock, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    const result = await executeQuery(query, [name, description, category, brand, condition, price, stock, created_at]);
+// Middleware to handle INSERT or create an entity without worrying about id
+export const createEntity = async (table, data) => {
+    const fields = Object.keys(data).join(', ');
+    const values = Object.values(data);
+    const placeholders = values.map(() => '?').join(', ');
+
+    const query = `INSERT INTO ${table} (${fields}) VALUES (${placeholders})`;
+    const result = await executeQuery(query, values);
     return result.insertId;
 };
 
-// Middleware to handle UPDATE product by ID
-export const updateProductById = async (productId, updateFields) => {
-    try {
-        // Fetch current product data
-        const currentProduct = await getProductById(productId);
-        if (currentProduct.length === 0) {
-            throw new Error(`Product with ID ${productId} not found.`);
-        }
+// Middleware to update an entity by ID
+export const updateById = async (table, id, data) => {
+    const fields = Object.keys(data).map(field => `${field} = ?`).join(', ');
+    const values = Object.values(data);
+    values.push(id);
 
-        // Merge updateFields with currentProduct to preserve existing values
-        const updatedProduct = {
-            ...currentProduct[0], // Spread current product data
-            ...updateFields,     // Spread updated fields (overwrite if exists)
-        };
-
-        // Build the update query dynamically based on provided fields
-        const fieldsToUpdate = Object.keys(updatedProduct).filter(key => key !== 'product_id'); // Exclude product_id from update
-
-        // Prepare SET clause excluding condition
-        const setClause = fieldsToUpdate.map(key => {
-            if (key === 'condition') {
-                return '`condition` = ?'; // Backtick `condition` to escape reserved keyword
-            } else {
-                return `${key} = ?`;
-            }
-        }).join(', ');
-
-        // Gather values to update
-        const updateParams = fieldsToUpdate.map(key => updatedProduct[key]);
-
-        // Construct full query with placeholders
-        const query = `UPDATE products SET ${setClause} WHERE product_id = ?`;
-
-        // Execute the update query
-        await executeQuery(query, [...updateParams, productId]);
-
-    } catch (error) {
-        console.error('Error updating product:', error);
-        throw new Error('Database query failed');
-    }
+    const query = `UPDATE ${table} SET ${fields} WHERE ${table}_id = ?`;
+    await executeQuery(query, values);
 };
 
-
-
-
-
-// Middleware to handle DELETE product
-export const deleteProductById = async (productId) => {
-    const query = 'DELETE FROM products WHERE product_id = ?';
-    const result = await executeQuery('SELECT * FROM products WHERE product_id = ?', [productId]);
-    if (result.length === 0) {
-        throw new Error('Product not found');
+// Middleware to delete an entity by ID
+export const deleteById = async (table, id) => {
+    const query = `DELETE FROM ${table} WHERE ${table}_id = ?`;
+    const result = await executeQuery(query, [id]);
+    if (result.affectedRows === 0) {
+        throw new Error(`${table} not found`);
     }
-    await executeQuery(query, [productId]);
 };
