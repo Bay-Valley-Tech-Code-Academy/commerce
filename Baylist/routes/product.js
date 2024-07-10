@@ -52,7 +52,11 @@ router.put('/:id', async (req, res) => {
         await middleware.updateById(tableName, productId, data);
         res.json({ message: 'Product updated successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Error updating product' });
+        if (error.message.includes('not found')) {
+            res.status(404).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'Error updating product' });
+        }
     }
 });
 
