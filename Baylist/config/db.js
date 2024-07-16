@@ -18,4 +18,4 @@ const pool = mysql.createPool({
 });
 
 // Export the pool for use in other modules
-export default pool.promise(); 
+export default pool; 
