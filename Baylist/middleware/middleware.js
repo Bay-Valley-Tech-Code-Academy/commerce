@@ -10,6 +10,16 @@ export const validateId = (id) => {
     }
 };
 
+// Middleware to check if an entity exists by ID
+export const validateEntityExists = async (tableName, id, column = `${tableName}_id`) => {
+    validateId(id); // First validate the ID format
+    const query = `SELECT 1 FROM ${tableName} WHERE ${column} = ? LIMIT 1`;
+    const result = await executeQuery(query, [id]);
+    if (result.length === 0) {
+        throw new Error(`${column} with ID ${id} not found`);
+    }
+};
+
 // Middleware to execute SQL query
 export const executeQuery = async (query, params = []) => {
     try {
