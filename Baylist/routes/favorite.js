@@ -11,8 +11,8 @@ router.get('/:user_id/lists', async (req, res, next) => {
     try {
         await middleware.validateEntityExists('user', user_id, 'user_id'); // Validate user_id
         const query = `
-            SELECT DISTINCT favlist_id
-            FROM ${tableName}
+            SELECT favlist_id
+            FROM favlist
             WHERE user_id = ?;
         `;
         const lists = await middleware.executeQuery(query, [user_id]);
@@ -23,17 +23,24 @@ router.get('/:user_id/lists', async (req, res, next) => {
 });
 
 // GET all favorite products in a specific list for a user
-router.get('/:user_id/lists/:favlist_id/', async (req, res, next) => {
+router.get('/:user_id/lists/:favlist_id', async (req, res, next) => {
     const { user_id, favlist_id } = req.params;
     try {
         await middleware.validateEntityExists('user', user_id, 'user_id'); // Validate user_id
-        await middleware.validateEntityExists(tableName, favlist_id, 'favlist_id'); // Validate favlist_id
+        await middleware.validateEntityExists('favlist', favlist_id, 'favlist_id'); // Validate favlist_id
+
         const query = `
-      SELECT favorite_id
-      FROM ${tableName}
-      WHERE user_id = ? AND favlist_id = ?;
-    `;
+            SELECT favorite_id
+            FROM favorite
+            WHERE user_id = ? AND favlist_id = ?;
+        `;
         const products = await middleware.executeQuery(query, [user_id, favlist_id]);
+
+        // Check if the favorite list exists for the user
+        if (products.length === 0) {
+            return res.status(404).json({ message: 'Favorite list not found for this user' });
+        }
+
         res.json(products);
     } catch (error) {
         next(error);
@@ -45,12 +52,12 @@ router.get('/:user_id/lists/:favlist_id/products/:favorite_id', async (req, res,
     const { user_id, favlist_id, favorite_id } = req.params;
     try {
         await middleware.validateEntityExists('user', user_id, 'user_id'); // Validate user_id
-        await middleware.validateEntityExists(tableName, favlist_id, 'favlist_id'); // Validate favlist_id
+        await middleware.validateEntityExists('favorite', favlist_id, 'favlist_id'); // Validate favlist_id
         await middleware.validateEntityExists('product', favorite_id, 'product_id'); // Validate favorite_id
 
         const query = `
             SELECT p.*
-            FROM ${tableName} f
+            FROM favorite f
             JOIN product p ON f.favorite_id = p.product_id
             WHERE f.user_id = ? AND f.favlist_id = ? AND f.favorite_id = ?;
         `;
@@ -72,11 +79,14 @@ router.post('/:user_id/lists', async (req, res, next) => {
     try {
         await middleware.validateEntityExists('user', user_id, 'user_id'); // Validate user_id
 
-        // Example query to create a new favorite list for the user
-        const insertQuery = `INSERT INTO ${tableName} (user_id) VALUES (?)`;
-        const result = await middleware.executeQuery(insertQuery, [user_id]);
+        // Insert a new favorite list for the user
+        const insertFavlistQuery = `
+            INSERT INTO favlist (user_id)
+            VALUES (?)
+        `;
+        const result = await middleware.executeQuery(insertFavlistQuery, [user_id]);
 
-        res.status(201).json({ list_id: result.insertId, message: 'Favorite list created successfully' });
+        res.status(201).json({ list_id: result.insertId, message: `Favorite list ${result.insertId} created successfully` });
     } catch (error) {
         next(error);
     }
