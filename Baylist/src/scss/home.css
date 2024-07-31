@@ -1,0 +1,102 @@
+
+.seasonal-items-container{
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #BB92E9;
+}
+
+.seasonal-item{
+    width: 150px;
+    height: 200px;
+    background-color: #E4CCFF;
+    border: 1px solid #cab3e3;
+}
+
+.seasonal-item-image{
+    max-width: 100px;
+    margin-top: 20px;
+    border-radius: 3%;
+}
+
+.seasonal-item-stats-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.seasonal-item-title{
+    background-color:#BDE3FF;
+    font-size: 12px;
+    width: 100px;
+    padding: 5px;
+    margin-left: 25px;
+    margin-top: 5px;
+    border-radius: 4%
+
+}
+
+.seasonal-item-price{
+    background-color: #BDE3FF;
+    font-size: 12px;
+    width: 50px;
+    padding: 5px;
+    margin-left: 25px;
+    margin-top: 5px;
+    border-radius: 4%;
+}
+
+.seasonal-items-title{
+    font-size: 30px;
+    display: flex;
+}
+
+
+.popular-items-container{
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #BB92E9;
+}
+
+.popular-item{
+    width: 150px;
+    height: 200px;
+    background-color: #E4CCFF;
+    border: 1px solid #cab3e3;
+}
+
+.popular-item-image{
+    max-width: 100px;
+    margin-top: 20px;
+    border-radius: 3%;
+}
+
+.popular-item-stats-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.popular-item-title{
+    background-color:#BDE3FF;
+    font-size: 12px;
+    width: 100px;
+    padding: 5px;
+    margin-left: 25px;
+    margin-top: 5px;
+    border-radius: 4%
+}
+
+.popular-item-price{
+    background-color: #BDE3FF;
+    font-size: 12px;
+    width: 50px;
+    padding: 5px;
+    margin-left: 25px;
+    margin-top: 5px;
+    border-radius: 4%;
+}
+
+.popular-items-title{
+    font-size: 30px;
+    display: flex;
+}
